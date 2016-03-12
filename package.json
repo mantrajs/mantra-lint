@@ -32,6 +32,9 @@
     "mocha": "^2.4.5"
   },
   "dependencies": {
-    "fs-extra": "^0.26.5"
+    "fs-extra": "^0.26.5",
+    "glob": "^7.0.3",
+    "lodash": "^4.6.1",
+    "minimatch": "^3.0.0"
   }
 }
