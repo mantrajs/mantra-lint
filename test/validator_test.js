@@ -15,10 +15,10 @@ describe("validators", function() {
   });
 
   describe("directory_structure", function() {
-    it("returns successful status if violation is not found", function() {
+    it("returns passing status if violation is not found", function() {
       prepareDummyApp({appPath: dummyAppPath});
       let result = validateDirStructure(dummyAppPath);
-      expect(result.status).to.equal('successful');
+      expect(result.status).to.equal('passing');
     });
 
     it("returns failing status if violation is found", function() {
@@ -39,10 +39,10 @@ describe("validators", function() {
   });
 
   describe("naming_convention", function() {
-    it("returns successful status if no validation is found", function() {
+    it("returns passing status if no validation is found", function() {
       prepareDummyApp({appPath: dummyAppPath});
       let result = validateNamingConvention(dummyAppPath);
-      expect(result.status).to.equal('successful');
+      expect(result.status).to.equal('passing');
     });
 
     it("returns failing status if a filename includes a dash", function() {
@@ -66,12 +66,12 @@ describe("validators", function() {
       expect(result.status).to.equal('failing');
     });
 
-    it("returns successful status if there is a matching filename for a test filename", function() {
+    it("returns passing status if there is a matching filename for a test filename", function() {
       prepareDummyApp({appPath: dummyAppPath});
       fse.outputFileSync(`${dummyAppPath}/client/modules/core/containers/tests/comment_list.js`);
       fse.outputFileSync(`${dummyAppPath}/client/modules/core/containers/comment_list.js`);
       let result = validateNamingConvention(dummyAppPath);
-      expect(result.status).to.equal('successful');
+      expect(result.status).to.equal('passing');
     });
   });
 });
