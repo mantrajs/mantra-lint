@@ -9,7 +9,7 @@ import {
 
 const dummyAppPath = path.resolve(__dirname, '../tmp/dummy');
 
-describe("validators", function() {
+describe("rules", function() {
   afterEach(function() {
     clearDummyApp(dummyAppPath);
   });
