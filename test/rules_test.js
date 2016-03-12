@@ -5,7 +5,7 @@ import {expect} from 'chai';
 import {prepareDummyApp, clearDummyApp} from './helpers';
 
 import {
-  lintDirStructure, lintNamingConvention, lintContainer
+  lintDirStructure, lintNamingConvention, lintContainer, lintAppContext
 } from '../lib/rules';
 
 const dummyAppPath = path.resolve(__dirname, '../tmp/dummy');
@@ -128,6 +128,13 @@ export default composeAll(
 
       let result = lintContainer(containerPath);
       expect(result.status).to.equal('failing');
+    });
+  });
+
+  describe("app_context", function() {
+    it("passes if there is no violation", function() {
+      let result = lintAppContext(__dirname + '/fixtures/context.tt');
+      expect(result.status).to.equal('passing');
     });
   });
 });
