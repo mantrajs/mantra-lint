@@ -3,6 +3,7 @@ import fse from 'fs-extra';
 export function prepareDummyApp({appPath, modules = ['core'], except = []}) {
   fse.mkdirsSync(appPath);
   fse.mkdirsSync(appPath + '/client/configs');
+  fse.mkdirsSync(appPath + '/client/main.js');
 
   modules.forEach(function (module) {
     fse.mkdirsSync(appPath + `/client/modules/${module}/index.js`);
