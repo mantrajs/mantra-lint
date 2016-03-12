@@ -1,5 +1,5 @@
 {
-  "name": "mantra-optimizer",
+  "name": "mantra-lint",
   "version": "0.1.0",
   "description": "Check to what extent your app is aligned with Mantra spec",
   "main": "lib/index.js",
@@ -10,20 +10,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sungwoncho/mantra-optimizer.git"
+    "url": "git+https://github.com/sungwoncho/mantra-lint.git"
   },
   "keywords": [
     "meteor",
     "mantra",
     "lint",
-    "optimizer"
+    "linter"
   ],
   "author": "Sung Won Cho <mikeswcho@gmail.com> (https://sungwoncho.io/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sungwoncho/mantra-optimizer/issues"
+    "url": "https://github.com/sungwoncho/mantra-lint/issues"
   },
-  "homepage": "https://github.com/sungwoncho/mantra-optimizer#readme",
+  "homepage": "https://github.com/sungwoncho/mantra-lint#readme",
   "devDependencies": {
     "babel-cli": "^6.6.5",
     "babel-core": "^6.7.2",
