@@ -2,7 +2,7 @@
   "name": "mantra-lint",
   "version": "0.0.1",
   "description": "Check to what extent your app is aligned with Mantra spec",
-  "main": "lib/index.js",
+  "main": "lib/rules/index.js",
   "scripts": {
     "test": "npm run-script compile && NODE_ENV=test  ./node_modules/.bin/_mocha ./test/*_test.js --compilers js:babel-core/register",
     "compile": "./node_modules/.bin/babel lib/ -d dist/",
