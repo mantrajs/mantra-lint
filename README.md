@@ -1,5 +1,7 @@
 # mantra-lint
 
+[![Build Status](https://travis-ci.org/sungwoncho/mantra-lint.svg?branch=master)](https://travis-ci.org/sungwoncho/mantra-lint)
+
 Check your code against the official Mantra spec.
 
 
