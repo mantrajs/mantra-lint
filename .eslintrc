@@ -86,7 +86,7 @@
     "no-catch-shadow": 0,
     "no-class-assign": 2,
     "no-cond-assign": 2,
-    "no-console": 1,
+    "no-console": 0,
     "no-const-assign": 2,
     "no-constant-condition": 2,
     "no-continue": 0,

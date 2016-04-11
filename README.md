@@ -10,8 +10,9 @@ Check your code against the official Mantra spec.
 
 ## Documentation
 
-mantra-lint is a library of functions that you can run against your code. All
-functions return an object like the following:
+mantra-lint is a library of functions that you can run against your code.
+
+All functions return an object like the following:
 
 ```js
 {
@@ -47,6 +48,8 @@ of the modules.
 
 *Relevant section: [Directory Layout](https://kadirahq.github.io/mantra/#sec-Directory-Layout)*
 
+---------------------------------------
+
 #### lintNamingConvention(appPath)
 
 Validates the naming convention of the files under `/client`.
@@ -60,6 +63,9 @@ Validates the naming convention of the files under `/client`.
 
 *Relevant section: [File Naming Conventions]
 (https://kadirahq.github.io/mantra/#sec-Appendix-File-Naming-Conventions)*
+
+---------------------------------------
+
 
 ## License
 

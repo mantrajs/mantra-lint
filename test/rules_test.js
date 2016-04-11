@@ -2,139 +2,95 @@ import path from 'path';
 import fs from 'fs';
 import fse from 'fs-extra';
 import {expect} from 'chai';
-import {prepareDummyApp, clearDummyApp} from './helpers';
 
-import {
-  lintDirStructure, lintNamingConvention, lintContainer, lintAppContext
-} from '../lib/rules';
+import Context from '../lib/context';
+import {containerRules} from '../lib/rules';
 
-const dummyAppPath = path.resolve(__dirname, '../tmp/dummy');
+describe("containerRules", function() {
 
-describe("rules", function() {
-  afterEach(function() {
-    clearDummyApp(dummyAppPath);
-  });
+  describe("exportComposer", function() {
 
-  describe("directory_structure", function() {
-    it("returns passing status if violation is not found", function() {
-      prepareDummyApp({appPath: dummyAppPath});
-      let result = lintDirStructure(dummyAppPath);
-      expect(result.status).to.equal('passing');
+    it("does not add a violation if there is no error", function() {
+      let code = fs.readFileSync(
+        `${__dirname}/fixtures/container.tt`, {encoding: 'utf-8'});
+      let ctx = new Context(code);
+
+      containerRules.exportComposer(ctx);
+      expect(ctx.violations).to.be.empty;
     });
 
-    it("returns failing status if violation is found", function() {
-      prepareDummyApp({appPath: dummyAppPath, except: ['/client/configs']});
-      let result = lintDirStructure(dummyAppPath);
-      expect(result.status).to.equal('failing');
-    });
-
-    it("checks multiple modules", function() {
-      prepareDummyApp({
-        appPath: dummyAppPath,
-        modules: ['core', 'comment'],
-        except: ['/client/modules/comment/actions']
-      });
-      let result = lintDirStructure(dummyAppPath);
-      expect(result.status).to.equal('failing');
-    });
-  });
-
-  describe("naming_convention", function() {
-    it("returns passing status if no validation is found", function() {
-      prepareDummyApp({appPath: dummyAppPath});
-      let result = lintNamingConvention(dummyAppPath);
-      expect(result.status).to.equal('passing');
-    });
-
-    it("returns failing status if a filename includes a dash", function() {
-      prepareDummyApp({appPath: dummyAppPath});
-      fse.outputFileSync(`${dummyAppPath}/client/modules/core/containers/tests/main-header.js`);
-      let result = lintNamingConvention(dummyAppPath);
-      expect(result.status).to.equal('failing');
-    });
-
-    it("returns failing status if a filename includes a dot", function() {
-      prepareDummyApp({appPath: dummyAppPath});
-      fse.outputFileSync(`${dummyAppPath}/client/modules/core/containers/main.layout.js`);
-      let result = lintNamingConvention(dummyAppPath);
-      expect(result.status).to.equal('failing');
-    });
-
-    it("returns failing status if there is no matching filename for a test filename", function() {
-      prepareDummyApp({appPath: dummyAppPath});
-      fse.outputFileSync(`${dummyAppPath}/client/modules/core/containers/tests/comment_list.js`);
-      let result = lintNamingConvention(dummyAppPath);
-      expect(result.status).to.equal('failing');
-    });
-
-    it("returns passing status if there is a matching filename for a test filename", function() {
-      prepareDummyApp({appPath: dummyAppPath});
-      fse.outputFileSync(`${dummyAppPath}/client/modules/core/containers/tests/comment_list.js`);
-      fse.outputFileSync(`${dummyAppPath}/client/modules/core/containers/comment_list.js`);
-      let result = lintNamingConvention(dummyAppPath);
-      expect(result.status).to.equal('passing');
-    });
-  });
-
-  describe("containers", function() {
-    it("passes if no violation is found", function() {
-      prepareDummyApp({appPath: dummyAppPath});
-      let containerPath = `${dummyAppPath}/client/modules/core/containers/post_list.js`;
-      fse.copySync(__dirname + '/fixtures/container.tt', containerPath);
-      let result = lintContainer(containerPath);
-      expect(result.status).to.equal('passing');
-    });
-
-    it("fails if the composer is not exported", function() {
-      let containerCode = fs.readFileSync(`${__dirname}/fixtures/container.tt`, {encoding: 'utf-8'});
+    it("adds a violation if the composer is not exported", function() {
+      let containerCode = fs.readFileSync(
+        `${__dirname}/fixtures/container.tt`, {encoding: 'utf-8'});
       let invalidCode = containerCode.replace('export const composer', 'const composer');
-      let containerPath = `${dummyAppPath}/client/modules/core/containers/post_list.js`;
-      fse.outputFileSync(containerPath, invalidCode);
+      let ctx = new Context(invalidCode);
 
-      let result = lintContainer(containerPath);
-      expect(result.status).to.equal('failing');
+      containerRules.exportComposer(ctx);
+      expect(ctx.violations.length).to.equal(1);
+    });
+  });
+
+  describe("exportMappers", function() {
+    it("does not add a violation if no error", function() {
+      let code = fs.readFileSync(
+        `${__dirname}/fixtures/container.tt`, {encoding: 'utf-8'});
+      let ctx = new Context(code);
+
+      containerRules.exportMappers(ctx);
+      expect(ctx.violations).to.be.empty;
     });
 
-    it("failes if the container is not exported by default", function() {
-      let containerCode = fs.readFileSync(`${__dirname}/fixtures/container.tt`, {encoding: 'utf-8'});
-      let invalidCode = containerCode.replace('export default composeAll(', 'function composeAll(');
-      let containerPath = `${dummyAppPath}/client/modules/core/containers/post_list.js`;
-      fse.outputFileSync(containerPath, invalidCode);
-
-      let result = lintContainer(containerPath);
-      expect(result.status).to.equal('failing');
-    });
-
-    it("failes if a mapper is defined but not exported", function() {
-      let invalidCode =
-`import PostList from '../components/post_list.jsx';
+    it("adds a violation if the mapper is defined but not exported", function() {
+      let code = `
+import PostList from '../components/post_list.jsx';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 
 export const composer = ({context}, onData) => {
   const {Meteor, Collections} = context();
+  if (Meteor.subscribe('posts.list').ready()) {
+    const posts = Collections.Posts.find().fetch();
+    onData(null, {posts});
+  }
 };
 
-const depsMapper = (context, actions) => ({
-  context: () => context
-});
+const depsMapper = ({}) => {}
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
 )(PostList);
 `;
-      let containerPath = `${dummyAppPath}/client/modules/core/containers/post_list.js`;
-      fse.outputFileSync(containerPath, invalidCode);
+      let ctx = new Context(code);
 
-      let result = lintContainer(containerPath);
-      expect(result.status).to.equal('failing');
+      containerRules.exportMappers(ctx);
+      expect(ctx.violations.length).to.equal(1);
     });
   });
 
-  describe("app_context", function() {
-    it("passes if there is no violation", function() {
-      let result = lintAppContext(__dirname + '/fixtures/context.tt');
-      expect(result.status).to.equal('passing');
+  describe("defaultExportContainer", function() {
+    it("handles no error", function() {
+      let code = fs.readFileSync(
+        `${__dirname}/fixtures/container.tt`, {encoding: 'utf-8'});
+      let ctx = new Context(code);
+
+      containerRules.defaultExportContainer(ctx);
+      expect(ctx.violations).to.be.empty;
+    });
+
+    it("handles error", function() {
+      let code = `
+import PostList from '../components/post_list.jsx';
+import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
+
+export const composer = ({context}, onData) => {
+
+};
+`;
+      let ctx = new Context(code);
+
+      containerRules.defaultExportContainer(ctx);
+      expect(ctx.violations.length).to.equal(1);
     });
   });
+
 });
