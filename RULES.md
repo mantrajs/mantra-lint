@@ -18,3 +18,5 @@ exported as default.
 - [x] `defaultExportContainer`: A container should be exported as default.
 - [x] `exportMappers`: If a mapper function is used to compose a component, it
 should be exported.
+- [ ] `composerDependencyInjected`: Composer functions should only use variables
+coming via props.
