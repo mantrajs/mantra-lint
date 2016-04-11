@@ -7,10 +7,18 @@ Feel free to add to this list by opening a PR. Newly suggested rules should have
 empty checkbox. When implemented, the checkbox should be ticked.
 
 
+#### actions
+
+- [ ] `noGlobalVariables`: No Global variables inside actions.
+- [ ] `noOutOfScopeVariables`: Actions should only use dependency injected by
+Application Context and other arguments, and libraries.
+
+
 #### appContext
 
 - [x] `defaultExportAppContext`: A function that returns the app context should be
 exported as default.
+
 
 #### containers
 
@@ -18,5 +26,11 @@ exported as default.
 - [x] `defaultExportContainer`: A container should be exported as default.
 - [x] `exportMappers`: If a mapper function is used to compose a component, it
 should be exported.
-- [ ] `composerDependencyInjected`: Composer functions should only use variables
+- [ ] `noOutOfScopeVariables`: Composer functions should only use variables
 coming via props.
+
+
+#### routes
+
+- [ ] `noRedirect`: redirection should be done in an action rather than
+FlowRouter's `triggersEnter`.
