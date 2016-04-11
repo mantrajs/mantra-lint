@@ -33,14 +33,14 @@ Returns an array that contains violations.
 
 If no violations are found, it returns an empty array.
 
-*params*
+**params**
 
-**code**
+`code`
 
 * Type: `String`
 * the code you want to lint
 
-**type**
+`type`
 
 * Type: `String`
 * the type of the code you are linting. The supported values are: `container`,
@@ -49,27 +49,28 @@ If no violations are found, it returns an empty array.
 
 ## Rules
 
-Here is the list of rules for each types.
+Here is a list of rules for different types of code. The name of the rule is the
+name of the function under `lib/rules/[type]`.
 
 #### appContext
 
-* `defaultExportAppContext`
-
-A function that returns the app context should be exported as default.
+* `defaultExportAppContext`: A function that returns the app context should be
+exported as default.
 
 #### containers
 
-* `exportComposer`
+* `exportComposer`: A composer function should be exported.
+* `defaultExportContainer`: A container should be exported as default.
+* `exportMappers`: If a mapper function is used to compose a component, it
+should be exported.
 
-A composer function should be exported.
 
-* `defaultExportContainer`
+## Contributor guide
 
-A container should be exported as default.
-
-* `exportMappers`
-
-If a mapper function is used to compose a component, it should be exported.
+* Clone this repository and run `npm install`.
+* Write your code under `/lib`.
+* `npm run-script` compile compiles your ES2015 code in `/lib` into `/dist`.
+* `npm test` compiles the code and runs the tests.
 
 
 ## License
