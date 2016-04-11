@@ -47,22 +47,9 @@ If no violations are found, it returns an empty array.
 `appContext`.
 
 
-## Rules
+## List of Rules
 
-Here is a list of rules for different types of code. The name of the rule is the
-name of the function under `lib/rules/[type]`.
-
-#### appContext
-
-* `defaultExportAppContext`: A function that returns the app context should be
-exported as default.
-
-#### containers
-
-* `exportComposer`: A composer function should be exported.
-* `defaultExportContainer`: A container should be exported as default.
-* `exportMappers`: If a mapper function is used to compose a component, it
-should be exported.
+Please see [RULES.md](https://github.com/sungwoncho/mantra-lint/blob/master/RULES.md).
 
 
 ## Contributor guide
