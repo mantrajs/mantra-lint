@@ -8,63 +8,66 @@ Check your code against the official Mantra spec.
     npm install mantra-lint
 
 
-## Documentation
+## Usage
 
-mantra-lint is a library of functions that you can run against your code.
-
-All functions return an object like the following:
+Currently you can lint your code programmatically as follows:
 
 ```js
-{
-  status: // either 'passing' or 'failing',
-  violations: // an array of objects representing violations
-}
+import {lint} from 'mantra-lint';
+import fs from 'fs';
+let code = fs.readFileSync('/client/modules/core/containers/my_container.js');
+
+lint(code, 'container');
+// => [{ message: `The mapper function 'depsMapper' should be exported` }]
 ```
 
-A violation is represented by an object like the following:
 
-```js
-{
-  path: // path to the file where to violation occurred
-  messages: // array of violation messages
-}
-```
+## API
 
-### Rules
+#### lint(code, type)
 
-Here is the list of the lint functions:
+Lints the code against all the rules defined for the provided type.
+Returns an array that contains violations.
 
-#### lintDirStructure(appPath)
-
-Validates the structure of the `/client` directory. Checks all the subdirectories
-of the modules.
+If no violations are found, it returns an empty array.
 
 *params*
 
-**appPath**
+**code**
 
 * Type: `String`
-* an absolute path to your application root
+* the code you want to lint
 
-*Relevant section: [Directory Layout](https://kadirahq.github.io/mantra/#sec-Directory-Layout)*
-
----------------------------------------
-
-#### lintNamingConvention(appPath)
-
-Validates the naming convention of the files under `/client`.
-
-*params*
-
-**appPath**
+**type**
 
 * Type: `String`
-* an absolute path to your application root
+* the type of the code you are linting. The supported values are: `container`,
+`appContext`.
 
-*Relevant section: [File Naming Conventions]
-(https://kadirahq.github.io/mantra/#sec-Appendix-File-Naming-Conventions)*
 
----------------------------------------
+## Rules
+
+Here is the list of rules for each types.
+
+#### appContext
+
+* `defaultExportAppContext`
+
+A function that returns the app context should be exported as default.
+
+#### containers
+
+* `exportComposer`
+
+A composer function should be exported.
+
+* `defaultExportContainer`
+
+A container should be exported as default.
+
+* `exportMappers`
+
+If a mapper function is used to compose a component, it should be exported.
 
 
 ## License
