@@ -4,6 +4,9 @@
 
 Check your code against the official Mantra spec.
 
+**You can suggest a new rule by editing [RULES.md]
+(https://github.com/sungwoncho/mantra-lint/blob/master/RULES.md)**
+
 
 ## Installation
 
