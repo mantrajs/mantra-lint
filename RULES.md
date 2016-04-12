@@ -36,6 +36,7 @@ exported by default.
 #### component
 
 - [ ] `importPureFunctionOnly`: Any imported functions should be pure.
+- [ ] `noImportMeteorPackages`: Libraries should not be imported from Meteor.
 
 
 #### container
